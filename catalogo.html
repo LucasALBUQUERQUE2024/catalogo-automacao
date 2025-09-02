@@ -204,30 +204,6 @@
         </div>
     </div>
     
-    <!-- Seção do Assistente Inteligente -->
-    <div id="chat-container" class="fixed right-4 bottom-4 w-11/12 max-w-sm md:max-w-md bg-gray-800 rounded-2xl shadow-xl flex flex-col overflow-hidden transform scale-95 md:scale-100">
-        <div class="bg-emerald-600 text-white p-4 rounded-t-2xl flex justify-between items-center">
-            <h3 class="text-lg font-bold">Assistente Inteligente ✨</h3>
-            <button id="close-chat-btn" class="text-xl font-bold">&times;</button>
-        </div>
-        <div id="chat-box" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm max-h-80 md:max-h-96">
-            <!-- Mensagens do chat serão exibidas aqui -->
-            <div class="flex justify-start">
-                <div class="bg-gray-700 text-white p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl shadow-lg max-w-[80%]">
-                    E aí! Sou o Lucas, seu consultor de automação. Me diz qual a sua dúvida sobre os kits ou sobre como a automação pode te ajudar!
-                </div>
-            </div>
-        </div>
-        <div class="p-4 border-t border-gray-700 flex items-center gap-2">
-            <input type="text" id="user-input" placeholder="Digite sua pergunta..." class="flex-1 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-            <button id="send-btn" class="bg-emerald-600 text-white p-3 rounded-full hover:bg-emerald-700 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                </svg>
-            </button>
-        </div>
-    </div>
-
     <script>
         function showModal() {
             document.getElementById('contactModal').style.display = 'flex';
@@ -243,99 +219,6 @@
                 closeModal();
             }
         }
-        
-        // --- Gemini API e Chatbot ---
-        const userInput = document.getElementById('user-input');
-        const sendBtn = document.getElementById('send-btn');
-        const chatBox = document.getElementById('chat-box');
-        const chatContainer = document.getElementById('chat-container');
-        const closeChatBtn = document.getElementById('close-chat-btn');
-        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=';
-        // VAI FICAR ASSIM: const apiKey = 'sua_chave_real_aqui';
-        const apiKey = 'AIzaSyA6CM6ALaNB9yktKRP3qt_f6wOkoHxlszU';
-        
-        let chatHistory = [{
-            role: 'user',
-            parts: [{ text: 'Você é Lucas, um consultor de automação residencial. Sua missão é ajudar clientes a entenderem o que é automação e qual kit de automação é o ideal para a necessidade deles, com base no catálogo fornecido. Seja amigável, direto, e evite termos técnicos complexos. Suas respostas devem ser baseadas nos kits disponíveis. O catálogo de kits é: Kit 1 - Segurança Simples (R$ 500): 2 Câmeras de Segurança Wi-Fi. Kit 2 - Conforto Básico (R$ 700): 2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz. Kit 3 - Completo (R$ 100): 2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz, 2 Câmeras de Segurança Wi-Fi.' }]
-        }];
-
-        const kits = [
-            { name: "Kit 1: Segurança Simples", price: "R$ 500", items: "2 Câmeras de Segurança Wi-Fi (HD, com visão noturna)." },
-            { name: "Kit 2: Conforto Básico", price: "R$ 700", items: "2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz (Echo Dot ou Google Home Mini)." },
-            { name: "Kit 3: Completo", price: "R$ 100", items: "2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz, 2 Câmeras de Segurança Wi-Fi." }
-        ];
-
-        function showMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-            messageDiv.innerHTML = `<div class="p-3 rounded-xl shadow-lg max-w-[80%] ${sender === 'user' ? 'bg-emerald-600 text-white rounded-br-xl rounded-bl-xl rounded-tl-xl' : 'bg-gray-700 text-white rounded-tr-xl rounded-bl-xl rounded-br-xl'}">${text}</div>`;
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        async function sendMessage() {
-            const userText = userInput.value.trim();
-            if (userText === '') return;
-
-            showMessage(userText, 'user');
-            userInput.value = '';
-            
-            // Adicionar a mensagem do usuário ao histórico do chat
-            chatHistory.push({ role: 'user', parts: [{ text: userText }] });
-
-            // Mostrar indicador de carregamento
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'loading-indicator';
-            loadingDiv.className = 'flex justify-start';
-            loadingDiv.innerHTML = `<div class="p-3 rounded-xl shadow-lg bg-gray-700 max-w-[80%]">Pensando...</div>`;
-            chatBox.appendChild(loadingDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-            
-            const payload = {
-                contents: chatHistory,
-                tools: [{ "google_search": {} }],
-                systemInstruction: {
-                    parts: [{ text: `Você é Lucas, um consultor de automação residencial. Sua missão é ajudar clientes a entenderem o que é automação e qual kit de automação é o ideal para a necessidade deles, com base no catálogo fornecido. Seja amigável, direto, e evite termos técnicos complexos. Suas respostas devem ser baseadas nos kits disponíveis. O catálogo de kits é: ${JSON.stringify(kits)}.` }]
-                }
-            };
-            
-            try {
-                const response = await fetch(API_URL + apiKey, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                const candidate = result.candidates?.[0];
-                let botMessage = "Desculpe, não consegui gerar uma resposta. Tente novamente.";
-                
-                if (candidate && candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
-                    botMessage = candidate.content.parts[0].text;
-                }
-                
-                document.getElementById('loading-indicator').remove();
-                showMessage(botMessage, 'bot');
-                chatHistory.push({ role: 'model', parts: [{ text: botMessage }] });
-
-            } catch (error) {
-                console.error("Erro ao chamar a API Gemini:", error);
-                document.getElementById('loading-indicator').remove();
-                showMessage("Ops, algo deu errado. Tente de novo.", 'bot');
-            }
-        }
-
-        sendBtn.addEventListener('click', sendMessage);
-        userInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        closeChatBtn.addEventListener('click', () => {
-            chatContainer.style.display = 'none';
-        });
-
     </script>
 </body>
 </html>
