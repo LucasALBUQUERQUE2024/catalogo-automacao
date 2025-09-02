@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Kits de Automação Residencial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            color: #e2e8f0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 2rem 1rem;
+        }
+        .card {
+            background-color: #2d3748;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            border-color: #4a5568;
+        }
+        .cta-button {
+            background-color: #48bb78;
+            color: #1a202c;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #68d391;
+        }
+        .kit-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+        .kit-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .kit-price {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #48bb78;
+        }
+        .kit-list li {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .kit-list li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #2d3748;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            max-width: 500px;
+            margin: 1.5rem;
+            position: relative;
+        }
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            color: #e2e8f0;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <!-- Header e Título Principal -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-white leading-tight mb-4">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-green-600">
+                    Soluções para uma Casa Inteligente
+                </span>
+            </h1>
+            <p class="text-lg sm:text-xl text-gray-400 font-medium">Controle, segurança e economia na palma da sua mão.</p>
+        </header>
+        
+        <!-- Seção de Kits -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <!-- Card do Kit 1 -->
+            <div class="card p-8 flex flex-col items-center text-center">
+                <div class="kit-icon mb-4">🔒</div>
+                <h2 class="kit-title mb-2">Kit 1: Segurança Simples</h2>
+                <p class="text-sm font-medium text-gray-400 mb-4">Monitore sua casa de onde estiver, em tempo real.</p>
+                <div class="mb-6 w-full">
+                    <h3 class="text-lg font-semibold text-white mb-2 text-left">O que inclui:</h3>
+                    <ul class="kit-list text-left text-sm space-y-2">
+                        <li>2 Câmeras de Segurança Wi-Fi (HD, com visão noturna)</li>
+                        <li>Instalação e Configuração Completa</li>
+                    </ul>
+                </div>
+                <div class="kit-price mb-4">R$ 500</div>
+                <button class="cta-button w-full" onclick="showModal()">Eu quero este kit!</button>
+            </div>
+
+            <!-- Card do Kit 2 (Segurança sem sirene) -->
+            <div class="card p-8 flex flex-col items-center text-center">
+                <div class="kit-icon mb-4">🏠</div>
+                <h2 class="kit-title mb-2">Kit 2: Conforto Básico</h2>
+                <p class="text-sm font-medium text-gray-400 mb-4">Transforme a iluminação e as tomadas da sua casa.</p>
+                <div class="mb-6 w-full">
+                    <h3 class="text-lg font-semibold text-white mb-2 text-left">O que inclui:</h3>
+                    <ul class="kit-list text-left text-sm space-y-2">
+                        <li>2 Lâmpadas Inteligentes Wi-Fi</li>
+                        <li>1 Tomada Inteligente Wi-Fi</li>
+                        <li>1 Assistente de Voz (Echo Dot ou Google Home Mini)</li>
+                        <li>Instalação e Configuração Completa</li>
+                    </ul>
+                </div>
+                <div class="kit-price mb-4">R$ 700</div>
+                <button class="cta-button w-full" onclick="showModal()">Eu quero este kit!</button>
+            </div>
+
+            <!-- Card do Kit 3 (Completo) -->
+            <div class="card p-8 flex flex-col items-center text-center">
+                <div class="kit-icon mb-4">🚀</div>
+                <h2 class="kit-title mb-2">Kit 3: Completo</h2>
+                <p class="text-sm font-medium text-gray-400 mb-4">A solução definitiva para sua casa inteligente.</p>
+                <div class="mb-6 w-full">
+                    <h3 class="text-lg font-semibold text-white mb-2 text-left">O que inclui:</h3>
+                    <ul class="kit-list text-left text-sm space-y-2">
+                        <li>2 Lâmpadas Inteligentes Wi-Fi</li>
+                        <li>1 Tomada Inteligente Wi-Fi</li>
+                        <li>1 Assistente de Voz (Echo Dot ou Google Home Mini)</li>
+                        <li>2 Câmeras de Segurança Wi-Fi (HD, com visão noturna)</li>
+                        <li>Instalação e Configuração Completa</li>
+                    </ul>
+                </div>
+                <div class="kit-price mb-4">R$ 100</div>
+                <button class="cta-button w-full" onclick="showModal()">Eu quero este kit!</button>
+            </div>
+        </div>
+        
+        <!-- Nova seção de instalação -->
+        <div class="w-full text-center mt-12 mb-12 py-2">
+            <p class="text-lg font-bold text-white mb-1">Já tem os materiais?</p>
+            <p class="text-sm text-gray-300">Nós fazemos a instalação para você! Entre em contato para um orçamento personalizado.</p>
+        </div>
+
+
+        <!-- Seção de Contato -->
+        <section class="mt-16 text-center">
+            <h2 class="text-3xl font-bold mb-4">Pronto para começar?</h2>
+            <p class="text-xl text-gray-400 mb-8">Escolha sua solução e vamos transformar sua casa.</p>
+            <div class="text-lg text-gray-300">
+                <p class="mb-2">📱 **(81) 98580-0823**</p>
+                <p class="mb-2">📸 **@Lucas_Allbuquerque__**</p>
+            </div>
+            <p class="mt-6 text-sm text-gray-500">Oferecemos 30 dias de suporte total para sua tranquilidade.</p>
+        </section>
+
+    </div>
+
+    <!-- Modal para Contato -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <h3 class="text-2xl font-bold mb-4">Vamos conversar!</h3>
+            <p class="text-lg text-gray-300 mb-6">Fale comigo pelo WhatsApp ou Instagram para agendar uma conversa e tirar todas as suas dúvidas.</p>
+            <p class="text-lg text-gray-300">📱 **(81) 98580-0823**</p>
+            <p class="text-lg text-gray-300">📸 **@Lucas_Allbuquerque__**</p>
+        </div>
+    </div>
+    
+    <!-- Seção do Assistente Inteligente -->
+    <div id="chat-container" class="fixed right-4 bottom-4 w-11/12 max-w-sm md:max-w-md bg-gray-800 rounded-2xl shadow-xl flex flex-col overflow-hidden transform scale-95 md:scale-100">
+        <div class="bg-emerald-600 text-white p-4 rounded-t-2xl flex justify-between items-center">
+            <h3 class="text-lg font-bold">Assistente Inteligente ✨</h3>
+            <button id="close-chat-btn" class="text-xl font-bold">&times;</button>
+        </div>
+        <div id="chat-box" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm max-h-80 md:max-h-96">
+            <!-- Mensagens do chat serão exibidas aqui -->
+            <div class="flex justify-start">
+                <div class="bg-gray-700 text-white p-3 rounded-tr-xl rounded-bl-xl rounded-br-xl shadow-lg max-w-[80%]">
+                    E aí! Sou o Lucas, seu consultor de automação. Me diz qual a sua dúvida sobre os kits ou sobre como a automação pode te ajudar!
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-700 flex items-center gap-2">
+            <input type="text" id="user-input" placeholder="Digite sua pergunta..." class="flex-1 p-3 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+            <button id="send-btn" class="bg-emerald-600 text-white p-3 rounded-full hover:bg-emerald-700 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function showModal() {
+            document.getElementById('contactModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // --- Gemini API e Chatbot ---
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const chatBox = document.getElementById('chat-box');
+        const chatContainer = document.getElementById('chat-container');
+        const closeChatBtn = document.getElementById('close-chat-btn');
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=';
+        const apiKey = ''; // A chave da API será fornecida em tempo de execução
+        
+        let chatHistory = [{
+            role: 'user',
+            parts: [{ text: 'Você é Lucas, um consultor de automação residencial. Sua missão é ajudar clientes a entenderem o que é automação e qual kit de automação é o ideal para a necessidade deles, com base no catálogo fornecido. Seja amigável, direto, e evite termos técnicos complexos. Suas respostas devem ser baseadas nos kits disponíveis. O catálogo de kits é: Kit 1 - Segurança Simples (R$ 500): 2 Câmeras de Segurança Wi-Fi. Kit 2 - Conforto Básico (R$ 700): 2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz. Kit 3 - Completo (R$ 100): 2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz, 2 Câmeras de Segurança Wi-Fi.' }]
+        }];
+
+        const kits = [
+            { name: "Kit 1: Segurança Simples", price: "R$ 500", items: "2 Câmeras de Segurança Wi-Fi (HD, com visão noturna)." },
+            { name: "Kit 2: Conforto Básico", price: "R$ 700", items: "2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz (Echo Dot ou Google Home Mini)." },
+            { name: "Kit 3: Completo", price: "R$ 100", items: "2 Lâmpadas Inteligentes Wi-Fi, 1 Tomada Inteligente Wi-Fi, 1 Assistente de Voz, 2 Câmeras de Segurança Wi-Fi." }
+        ];
+
+        function showMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+            messageDiv.innerHTML = `<div class="p-3 rounded-xl shadow-lg max-w-[80%] ${sender === 'user' ? 'bg-emerald-600 text-white rounded-br-xl rounded-bl-xl rounded-tl-xl' : 'bg-gray-700 text-white rounded-tr-xl rounded-bl-xl rounded-br-xl'}">${text}</div>`;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userText = userInput.value.trim();
+            if (userText === '') return;
+
+            showMessage(userText, 'user');
+            userInput.value = '';
+            
+            // Adicionar a mensagem do usuário ao histórico do chat
+            chatHistory.push({ role: 'user', parts: [{ text: userText }] });
+
+            // Mostrar indicador de carregamento
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-indicator';
+            loadingDiv.className = 'flex justify-start';
+            loadingDiv.innerHTML = `<div class="p-3 rounded-xl shadow-lg bg-gray-700 max-w-[80%]">Pensando...</div>`;
+            chatBox.appendChild(loadingDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            
+            const payload = {
+                contents: chatHistory,
+                tools: [{ "google_search": {} }],
+                systemInstruction: {
+                    parts: [{ text: `Você é Lucas, um consultor de automação residencial. Sua missão é ajudar clientes a entenderem o que é automação e qual kit de automação é o ideal para a necessidade deles, com base no catálogo fornecido. Seja amigável, direto, e evite termos técnicos complexos. Suas respostas devem ser baseadas nos kits disponíveis. O catálogo de kits é: ${JSON.stringify(kits)}.` }]
+                }
+            };
+            
+            try {
+                const response = await fetch(API_URL + apiKey, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+                let botMessage = "Desculpe, não consegui gerar uma resposta. Tente novamente.";
+                
+                if (candidate && candidate.content && candidate.content.parts && candidate.content.parts.length > 0) {
+                    botMessage = candidate.content.parts[0].text;
+                }
+                
+                document.getElementById('loading-indicator').remove();
+                showMessage(botMessage, 'bot');
+                chatHistory.push({ role: 'model', parts: [{ text: botMessage }] });
+
+            } catch (error) {
+                console.error("Erro ao chamar a API Gemini:", error);
+                document.getElementById('loading-indicator').remove();
+                showMessage("Ops, algo deu errado. Tente de novo.", 'bot');
+            }
+        }
+
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatContainer.style.display = 'none';
+        });
+
+    </script>
+</body>
+</html>
